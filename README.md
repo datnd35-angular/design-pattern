@@ -28,7 +28,7 @@ Tóm lại thì là những kinh nghiệm mà người trước đã đổ máu 
 # **III. Phân loại Design Patterns**
 Hệ thống 23 mẫu design pattern được chia thành 3 nhóm chính theo cuốn *"Design Patterns: Elements of Reusable Object-Oriented Software"*:
 
-## **1. Creational Patterns (Nhóm khởi tạo)**  
+## **Creational Patterns (Nhóm khởi tạo)**  
 - **Mục tiêu**: Tạo đối tượng mà không cần sử dụng trực tiếp từ khóa `new`.  
 - **Mẫu tiêu biểu**:
   - Singleton
@@ -38,7 +38,7 @@ Hệ thống 23 mẫu design pattern được chia thành 3 nhóm chính theo cu
   - Prototype  
 - **Hiểu thêm**:
 ### **Singleton**
-## **2. Structural Patterns (Nhóm cấu trúc)**  
+## **Structural Patterns (Nhóm cấu trúc)**  
 - **Mục tiêu**: Thiết lập và định nghĩa quan hệ giữa các đối tượng hoặc class.  
 - **Mẫu tiêu biểu**:
   - Adapter
@@ -49,7 +49,7 @@ Hệ thống 23 mẫu design pattern được chia thành 3 nhóm chính theo cu
   - Flyweight
   - Proxy  
 
-## **3. Behavioral Patterns (Nhóm hành vi)**  
+## **Behavioral Patterns (Nhóm hành vi)**  
 - **Mục tiêu**: Quản lý quan hệ hành vi giữa các đối tượng.  
 - **Mẫu tiêu biểu**:
   - Interpreter
