@@ -1,4 +1,4 @@
-##**Design Patterns là gì? Tại sao nó là trợ thủ đắc lực của Developers?**
+## **Design Patterns là gì? Tại sao nó là trợ thủ đắc lực của Developers?**
 
 # **I. Định nghĩa**
 Design Pattern (mẫu thiết kế) là các giải pháp tối ưu, tái sử dụng để giải quyết các vấn đề phổ biến trong lập trình hướng đối tượng (OOP).  
