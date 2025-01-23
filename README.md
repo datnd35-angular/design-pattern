@@ -36,7 +36,8 @@ Hệ thống 23 mẫu design pattern được chia thành 3 nhóm chính theo cu
   - Abstract Factory
   - Builder
   - Prototype  
-
+- **Hiểu thêm**:
+### **Singleton**
 ## **2. Structural Patterns (Nhóm cấu trúc)**  
 - **Mục tiêu**: Thiết lập và định nghĩa quan hệ giữa các đối tượng hoặc class.  
 - **Mẫu tiêu biểu**:
