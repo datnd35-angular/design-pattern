@@ -29,14 +29,75 @@ Tóm lại thì là những kinh nghiệm mà người trước đã đổ máu 
 Hệ thống 23 mẫu design pattern được chia thành 3 nhóm chính theo cuốn *"Design Patterns: Elements of Reusable Object-Oriented Software"*:
 
 ## **Creational Patterns (Nhóm khởi tạo)**  
-- **Mục tiêu**: Tạo đối tượng mà không cần sử dụng trực tiếp từ khóa `new`.  
-- **Mẫu tiêu biểu**:
+### **Mục tiêu**: Tạo đối tượng mà không cần sử dụng trực tiếp từ khóa `new`.  
+### **Mẫu tiêu biểu**:
   - Singleton
   - Factory Method
   - Abstract Factory
   - Builder
   - Prototype  
-- **Hiểu thêm**:
+### **Hiểu thêm**:
+
+#### **1. Singleton Design Pattern**
+
+Là một mẫu thiết kế (design pattern) trong lập trình, được sử dụng để đảm bảo rằng một lớp (class) chỉ có duy nhất một thể hiện (instance) trong toàn bộ ứng dụng và cung cấp một điểm truy cập toàn cầu đến thể hiện đó. Mẫu thiết kế này giúp tiết kiệm bộ nhớ, vì không tạo ra nhiều đối tượng của lớp, đồng thời quản lý trạng thái chung của ứng dụng.
+
+Các đặc điểm chính của Singleton Pattern:
+- **Một thể hiện duy nhất**: Lớp chỉ tạo một thể hiện duy nhất trong suốt vòng đời của ứng dụng.
+- **Điểm truy cập toàn cục**: Cung cấp một phương thức tĩnh để truy cập thể hiện duy nhất của lớp đó.
+- **Khởi tạo lazy**: Thể hiện chỉ được tạo khi nó được yêu cầu (khởi tạo theo nhu cầu, không khởi tạo ngay lập tức khi ứng dụng bắt đầu).
+- Tóm lại `Singleton Pattern` là bạn có một đối tượng được khởi tạo và gán giá trị cho biến thì những lần khởi tạo sau thì giá trị của biến không đổi.
+Dưới đây là đoạn mã của lớp `Constants` đã được định dạng lại để dễ đọc hơn:
+
+```typescript
+export class Constants {
+    static serverAddress = environment.serverAddress;
+
+    static snackBarDuration = 2500;
+
+
+
+    static MONTH_YEAR_FORMATS: MatDateFormats = {
+        parse: {
+            dateInput: 'MM/YYYY',
+        },
+        display: {
+            dateInput: 'MM/YYYY',
+            monthYearLabel: 'MMM YYYY',
+            dateA11yLabel: 'LL',
+            monthYearA11yLabel: 'MMMM YYYY',
+        },
+    };
+}
+```
+- Đoạn mã trên không phải là `Singleton Pattern` mà là một lớp `Constants` đơn giản với các thuộc tính tĩnh (static). Các thuộc tính này có thể được truy cập trực tiếp mà không cần tạo thể hiện của lớp `(new)`, vì tất cả các thuộc tính và phương thức trong lớp đều được khai báo là `static`.
+
+Ví dụ về Singleton Pattern trong JavaScript:
+
+```javascript
+class Singleton {
+    constructor() {
+        if (Singleton.instance) {
+            return Singleton.instance;
+        }
+        this.value = Math.random();
+        Singleton.instance = this;
+    }
+
+    getValue() {
+        return this.value;
+    }
+}
+
+// Tạo 2 đối tượng
+const instance1 = new Singleton();
+const instance2 = new Singleton();
+
+console.log(instance1 === instance2); // true, vì chỉ có một instance duy nhất
+console.log(instance1.getValue() === instance2.getValue()); // true
+```
+
+
 ### **Singleton**
 ## **Structural Patterns (Nhóm cấu trúc)**  
 - **Mục tiêu**: Thiết lập và định nghĩa quan hệ giữa các đối tượng hoặc class.  
