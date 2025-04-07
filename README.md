@@ -493,6 +493,99 @@ class Program
 }
 ```
 
+
+### **Tình huống thực tế:**
+Giả sử bạn đang phát triển phần mềm quản lý nhà máy sản xuất, trong đó có các hệ thống cũ (legacy systems) mà bạn cần tích hợp với phần mềm mới. Một trong những hệ thống cũ là hệ thống quản lý máy móc, có giao diện cũ và không tương thích với các yêu cầu mới của phần mềm quản lý. Bạn cần tích hợp hệ thống này vào phần mềm mới mà không muốn thay đổi mã nguồn cũ.
+
+### **Giải pháp với Adapter Pattern:**
+Bạn có thể sử dụng **Adapter Pattern** để "bao bọc" hệ thống cũ, chuyển giao diện của hệ thống cũ thành một giao diện mà phần mềm mới có thể hiểu và làm việc với nó. Điều này giúp bạn giữ nguyên hệ thống cũ mà vẫn có thể tương tác với phần mềm mới.
+
+### **Các lớp trong Adapter Pattern:**
+
+1. **Target (Mục tiêu)**: Giao diện mà phần mềm mới yêu cầu, có thể là các phương thức mà phần mềm quản lý mới cần sử dụng.
+
+2. **Adapter**: Là lớp trung gian giúp chuyển giao diện từ hệ thống cũ (Service) sang giao diện mà phần mềm mới (Client) mong muốn. Lớp Adapter sẽ sử dụng đối tượng cũ để thực hiện các phương thức mà phần mềm mới yêu cầu.
+
+3. **Adaptee (Hệ thống cũ)**: Lớp cũ hoặc hệ thống cũ mà bạn muốn tích hợp vào phần mềm mới, nhưng có giao diện không tương thích.
+
+### **Ví dụ với mã C#**:
+
+Giả sử hệ thống cũ cung cấp một lớp `LegacyMachine` với phương thức `GetMachineData()`, trong khi phần mềm mới yêu cầu một giao diện `IMachine` với phương thức `GetMachineDetails()`.
+
+```csharp
+// Target interface
+public interface IMachine
+{
+    string GetMachineDetails();
+}
+
+// Adaptee (Hệ thống cũ)
+public class LegacyMachine
+{
+    public string GetMachineData()
+    {
+        return "Legacy Machine Data";
+    }
+}
+
+// Adapter class
+public class MachineAdapter : IMachine
+{
+    private readonly LegacyMachine _legacyMachine;
+
+    public MachineAdapter(LegacyMachine legacyMachine)
+    {
+        _legacyMachine = legacyMachine;
+    }
+
+    // Phương thức này chuyển đổi từ hệ thống cũ sang giao diện mới
+    public string GetMachineDetails()
+    {
+        // Chuyển đổi dữ liệu từ hệ thống cũ sang giao diện mới
+        return _legacyMachine.GetMachineData();
+    }
+}
+
+// Client sử dụng giao diện mới
+public class Client
+{
+    private readonly IMachine _machine;
+
+    public Client(IMachine machine)
+    {
+        _machine = machine;
+    }
+
+    public void DisplayMachineDetails()
+    {
+        Console.WriteLine(_machine.GetMachineDetails());
+    }
+}
+
+// Sử dụng Adapter trong hàm Main
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        // Hệ thống cũ
+        LegacyMachine legacyMachine = new LegacyMachine();
+
+        // Adapter giúp lớp mới tương tác với hệ thống cũ
+        IMachine machine = new MachineAdapter(legacyMachine);
+
+        // Client làm việc với giao diện mới
+        Client client = new Client(machine);
+        client.DisplayMachineDetails(); // In ra: Legacy Machine Data
+    }
+}
+```
+
+### **Giải thích:**
+- **LegacyMachine** là hệ thống cũ với phương thức `GetMachineData()`.
+- **IMachine** là giao diện mà phần mềm mới yêu cầu.
+- **MachineAdapter** là lớp Adapter, nó "bao bọc" `LegacyMachine` và chuyển đổi phương thức `GetMachineData()` thành `GetMachineDetails()` mà phần mềm mới mong muốn.
+- **Client** là phần mềm mới, chỉ giao tiếp với hệ thống qua giao diện `IMachine`, không cần quan tâm hệ thống cũ như thế nào.
+
 ## **Structural Patterns (Nhóm cấu trúc)**  
 - **Mục tiêu**: Thiết lập và định nghĩa quan hệ giữa các đối tượng hoặc class.  
 - **Mẫu tiêu biểu**:
