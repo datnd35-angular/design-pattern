@@ -97,6 +97,154 @@ console.log(instance1 === instance2); // true, vì chỉ có một instance duy 
 console.log(instance1.getValue() === instance2.getValue()); // true
 ```
 
+#### **2. Factory Method Design Pattern**
+
+Là một mẫu thiết kế thuộc nhóm **Creational Patterns**, được sử dụng khi bạn cần tạo ra một đối tượng nhưng **không biết trước** đối tượng cụ thể là gì – nó phụ thuộc vào **logic nghiệp vụ (business logic)** tại runtime.
+
+Mẫu này cung cấp **một interface chung để tạo đối tượng**, nhưng cho phép các lớp con **tự quyết định loại đối tượng nào sẽ được tạo ra**.
+
+---
+
+### 🔍 Các đặc điểm chính của Factory Method:
+- **Tạo đối tượng thông qua interface chung**: Không khởi tạo trực tiếp thông qua `new`.
+- **Ẩn logic khởi tạo**: Che giấu toàn bộ quá trình xử lý phức tạp khi tạo object.
+- **Hạn chế sự phụ thuộc** giữa client code và các lớp cụ thể.
+- **Dễ mở rộng**: Thêm object mới mà không ảnh hưởng đến hệ thống cũ.
+- **Tăng tính đa hình**: Lựa chọn object khởi tạo dựa vào tham số truyền vào.
+
+---
+
+### 📌 Ví dụ vấn đề (Trước khi dùng Factory Method)
+
+Giả sử bạn có interface `IAnimal` và các class `Dog`, `Cat`, `Duck` implement nó:
+
+```csharp
+IAnimal animal;
+
+if (...) {
+    animal = new Dog();
+} else if (...) {
+    animal = new Cat();
+} else {
+    animal = new Duck();
+}
+```
+
+🔁 **Nhược điểm**:
+- Lặp lại logic khởi tạo ở nhiều nơi.
+- Khó bảo trì, dễ lỗi nếu phải sửa ở nhiều chỗ.
+- Thiếu tính mở rộng và dễ vi phạm nguyên lý **Open/Closed**.
+
+
+### ✅ Giải pháp: Sử dụng Factory Method
+
+Tạo ra một class `AnimalFactory` để quản lý logic khởi tạo:
+
+```csharp
+public class AnimalFactory {
+    public static IAnimal CreateAnimal(AnimalType type)
+    {
+        switch (type) {
+            case AnimalType.Cat:
+                return new Cat();
+            case AnimalType.Dog:
+                return new Dog();
+            case AnimalType.Duck:
+                return new Duck();
+            default:
+                throw new ArgumentException("Invalid animal type");
+        }
+    }
+}
+```
+
+
+### 🧱 Kiến trúc của Factory Method Pattern
+
+- **Product**: Interface/abstract class định nghĩa các đối tượng được tạo.
+- **ConcreteProduct**: Các class cụ thể implement `Product`.
+- **Creator**: Khai báo method tạo `Product`. Có thể chứa default implementation.
+- **ConcreteCreator**: Ghi đè `factory method` để tạo `ConcreteProduct`.
+
+
+### 👍 Ưu điểm:
+- Tăng tính linh hoạt, dễ bảo trì.
+- Tập trung logic khởi tạo tại một nơi.
+- Dễ mở rộng (add class mới mà không sửa client).
+- Giảm lỗi compile-time, hỗ trợ xử lý lỗi khởi tạo.
+
+### 👎 Nhược điểm:
+- Tăng số lượng class cần tạo.
+- Refactor từ code cũ sang Factory có thể phức tạp.
+- Nếu dùng private constructor, các class có thể không kế thừa được.
+
+---
+
+### 🧠 Khi nào nên sử dụng:
+- Khi bạn có nhiều class con kế thừa từ cùng một interface/abstract class.
+- Khi logic khởi tạo phức tạp và được dùng ở nhiều nơi.
+- Khi cần dễ dàng mở rộng hệ thống trong tương lai.
+
+
+### 💻 Ví dụ minh họa với C#
+
+```csharp
+public interface IPizza
+{
+    decimal GetPrice();
+}
+
+public class HamAndMushroomPizza : IPizza
+{
+    public decimal GetPrice() => 8.5M;
+}
+
+public class DeluxePizza : IPizza
+{
+    public decimal GetPrice() => 10.5M;
+}
+
+public class SeafoodPizza : IPizza
+{
+    public decimal GetPrice() => 11.5M;
+}
+
+public class PizzaFactory
+{
+    public enum PizzaType { HamMushroom, Deluxe, Seafood }
+
+    public IPizza CreatePizza(PizzaType pizzaType)
+    {
+        return pizzaType switch
+        {
+            PizzaType.HamMushroom => new HamAndMushroomPizza(),
+            PizzaType.Deluxe => new DeluxePizza(),
+            PizzaType.Seafood => new SeafoodPizza(),
+            _ => throw new ArgumentException("Invalid pizza type"),
+        };
+    }
+}
+```
+
+### 🧪 Sử dụng Factory Method trong chương trình
+
+```csharp
+class Program
+{
+    static void Main(string[] args)
+    {
+        var factory = new PizzaFactory();
+        var pizza = factory.CreatePizza(PizzaFactory.PizzaType.Seafood);
+
+        Console.WriteLine(pizza.GetPrice()); // 11.5
+    }
+}
+```
+
+**Design Patterns liên quan:**
+- **Abstract Factory**: Tạo ra *họ* các đối tượng liên quan thay vì một.
+- **Prototype**: Tạo object bằng cách clone thay vì `new`.
+- **Builder**: Dùng khi object có nhiều bước khởi tạo phức tạp.
 
 ### **Singleton**
 ## **Structural Patterns (Nhóm cấu trúc)**  
