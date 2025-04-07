@@ -396,6 +396,155 @@ class Program
   - Flyweight
   - Proxy  
 
+#### **1. Adapter Design Pattern**
+
+Là một mẫu thiết kế thuộc nhóm **Structural Patterns**, được sử dụng khi bạn muốn **kết nối các class có interface không tương thích** để chúng có thể làm việc cùng nhau.
+
+Adapter đóng vai trò là **cầu nối** giữa một interface có sẵn và một interface mới mà client mong muốn, giúp tái sử dụng code mà không phải sửa đổi lớp gốc.
+
+### 🔍 Đặc điểm chính của Adapter Pattern:
+- **Chuyển đổi interface không tương thích thành interface mong muốn**.
+- **Tái sử dụng class hiện tại** mà không cần thay đổi code gốc.
+- **Tăng tính mở rộng và khả năng tương tác** giữa các hệ thống cũ và mới.
+- Có thể thực hiện theo **kế thừa (Class Adapter)** hoặc **composition (Object Adapter)**.
+
+### 🚩 Bài toán cần giải quyết (Trước khi dùng Adapter)
+
+Bạn đang phát triển ứng dụng theo dõi chứng khoán, dữ liệu thị trường được lấy về theo định dạng **XML**, nhưng thư viện phân tích bạn muốn tích hợp lại chỉ hỗ trợ **JSON**.
+
+**Vấn đề**:
+- Không thể sửa đổi thư viện hoặc dữ liệu gốc.
+- Nếu tự viết logic chuyển đổi trong toàn bộ hệ thống, sẽ làm **phân tán, khó bảo trì**.
+
+### Giải pháp: Sử dụng Adapter
+
+Bạn có thể viết một **Adapter** để chuyển đổi dữ liệu từ XML sang JSON trước khi truyền vào thư viện phân tích.
+
+> Khi client gọi phương thức, Adapter sẽ **"dịch" request** sang dạng mà service (thư viện phân tích) hiểu được.
+
+
+###  Các kiểu Adapter phổ biến
+
+#### Object Adapter – Composition
+- Adapter **chứa (wrap)** một instance của class gốc (Adaptee).
+- Adapter **implement interface mới (Target)** để tương thích với client.
+
+**Ưu điểm**:
+- Linh hoạt hơn, có thể tái sử dụng với nhiều Adaptee khác nhau.
+
+#### Class Adapter – Inheritance
+- Adapter **kế thừa Adaptee** và **implement interface Target**.
+- Ghi đè phương thức để chuyển đổi logic khi cần.
+
+**Hạn chế**:
+- Bị ràng buộc bởi khả năng kế thừa (chỉ hỗ trợ 1 Adaptee tại một thời điểm).
+
+### So sánh nhanh giữa 2 loại Adapter:
+
+| Tiêu chí              | Object Adapter           | Class Adapter              |
+|-----------------------|--------------------------|-----------------------------|
+| Dựa trên              | Composition              | Inheritance                 |
+| Tái sử dụng nhiều Adaptee | ✔️ Có                  | ❌ Không                    |
+| Dễ mở rộng            | ✔️ Có                    | ❌ Khó                      |
+| Phù hợp với interface | ✔️                      | ❌ Không nếu là class       |
+
+
+###  Ưu điểm:
+- **Tuân thủ SRP**: Adapter tách biệt logic chuyển đổi khỏi business code.
+- **Tuân thủ OCP**: Không cần sửa code gốc khi muốn mở rộng.
+- Tái sử dụng dễ dàng, phù hợp khi tích hợp hệ thống bên thứ ba.
+
+###  Nhược điểm:
+- Tăng số lượng lớp trong hệ thống.
+- Có thể phức tạp hơn nếu chỉ cần sửa một vài dòng code.
+
+### Khi nào nên dùng Adapter Pattern?
+- Khi cần **tái sử dụng class cũ** nhưng interface không tương thích.
+- Khi bạn không thể sửa class gốc (bên thứ ba, thư viện đóng gói).
+- Khi muốn **hợp nhất** hệ thống mới và cũ mà không gây ảnh hưởng ngược.
+
+### Ví dụ minh họa bằng C#
+
+```csharp
+public interface IShape
+{
+    void Draw(int x1, int y1, int x2, int y2);
+}
+
+// Adaptee: không tương thích với IShape
+public class LegacyLine
+{
+    public void Draw(int x1, int y1, int x2, int y2)
+    {
+        Console.WriteLine($"Drawing line from ({x1}, {y1}) to ({x2}, {y2})");
+    }
+}
+
+// Adapter: giúp LegacyLine tương thích với IShape
+public class LineAdapter : IShape
+{
+    private readonly LegacyLine _legacyLine;
+
+    public LineAdapter(LegacyLine legacyLine)
+    {
+        _legacyLine = legacyLine;
+    }
+
+    public void Draw(int x1, int y1, int x2, int y2)
+    {
+        _legacyLine.Draw(x1, y1, x2, y2);
+    }
+}
+```
+
+```csharp
+// Adaptee khác
+public class LegacyRectangle
+{
+    public void Draw(int x, int y, int w, int h)
+    {
+        Console.WriteLine($"Drawing rectangle at ({x},{y}) width {w} height {h}");
+    }
+}
+
+// Adapter cho LegacyRectangle
+public class RectangleAdapter : IShape
+{
+    private readonly LegacyRectangle _legacyRectangle;
+
+    public RectangleAdapter(LegacyRectangle legacyRectangle)
+    {
+        _legacyRectangle = legacyRectangle;
+    }
+
+    public void Draw(int x1, int y1, int x2, int y2)
+    {
+        int x = Math.Min(x1, x2);
+        int y = Math.Min(y1, y2);
+        int w = Math.Abs(x2 - x1);
+        int h = Math.Abs(y2 - y1);
+        _legacyRectangle.Draw(x, y, w, h);
+    }
+}
+```
+
+```csharp
+// Client code sử dụng interface thống nhất
+class Program
+{
+    static void Main(string[] args)
+    {
+        List<IShape> shapes = new List<IShape>
+        {
+            new LineAdapter(new LegacyLine()),
+            new RectangleAdapter(new LegacyRectangle())
+        };
+
+        shapes.ForEach(shape => shape.Draw(5, 10, -3, 2));
+    }
+}
+```
+
 ## **Behavioral Patterns (Nhóm hành vi)**  
 - **Mục tiêu**: Quản lý quan hệ hành vi giữa các đối tượng.  
 - **Mẫu tiêu biểu**:
