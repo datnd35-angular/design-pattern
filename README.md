@@ -234,6 +234,112 @@ class Program
     }
 }
 ```
+
+
+### Ví dụ 2
+
+**Tình huống thực tế:**
+Giả sử bạn đang phát triển phần mềm quản lý nhà máy sản xuất, trong đó có các loại máy móc khác nhau như **Máy in**, **Máy cắt**, **Máy hàn**, mỗi loại máy sẽ có những hành động và đặc tính riêng. Bạn muốn tạo ra các đối tượng của các loại máy này mà không cần phải phụ thuộc vào cụ thể từng lớp máy, giúp mã dễ mở rộng và bảo trì.
+
+**Giải pháp với Factory Method Pattern:**
+Bạn sẽ tạo ra một **Factory** cho mỗi loại máy, và sử dụng **Factory Method** để quyết định loại máy sẽ được tạo ra dựa trên các yêu cầu của hệ thống.
+
+**Các lớp trong Factory Method Pattern:**
+
+1. **Product (Máy móc)**: Đây là các lớp mô tả các loại máy móc, ví dụ: `PrintingMachine`, `CuttingMachine`, `WeldingMachine`.
+
+2. **Creator (Factory)**: Lớp factory sẽ có một phương thức `CreateMachine()` để tạo ra các đối tượng máy móc.
+
+3. **ConcreteCreator**: Các lớp con của factory (tạo ra các máy cụ thể như `PrintingMachineCreator`, `CuttingMachineCreator`).
+
+```
+// Abstract Product: Các loại máy móc
+public interface IMachine
+{
+    void Operate();
+}
+
+// Concrete Products: Các loại máy móc cụ thể
+public class PrintingMachine : IMachine
+{
+    public void Operate()
+    {
+        Console.WriteLine("Printing machine is operating.");
+    }
+}
+
+public class CuttingMachine : IMachine
+{
+    public void Operate()
+    {
+        Console.WriteLine("Cutting machine is operating.");
+    }
+}
+
+public class WeldingMachine : IMachine
+{
+    public void Operate()
+    {
+        Console.WriteLine("Welding machine is operating.");
+    }
+}
+
+// Creator (Factory)
+public abstract class MachineFactory
+{
+    public abstract IMachine CreateMachine();  // Factory Method
+
+    // Một phương thức giúp client sử dụng máy mà không cần biết rõ lớp cụ thể
+    public void StartMachine()
+    {
+        IMachine machine = CreateMachine();
+        machine.Operate();
+    }
+}
+
+// Concrete Creators
+public class PrintingMachineFactory : MachineFactory
+{
+    public override IMachine CreateMachine()
+    {
+        return new PrintingMachine();
+    }
+}
+
+public class CuttingMachineFactory : MachineFactory
+{
+    public override IMachine CreateMachine()
+    {
+        return new CuttingMachine();
+    }
+}
+
+public class WeldingMachineFactory : MachineFactory
+{
+    public override IMachine CreateMachine()
+    {
+        return new WeldingMachine();
+    }
+}
+
+// Client code
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Tạo các factory để tạo các loại máy khác nhau
+        MachineFactory printingFactory = new PrintingMachineFactory();
+        MachineFactory cuttingFactory = new CuttingMachineFactory();
+        MachineFactory weldingFactory = new WeldingMachineFactory();
+
+        // Sử dụng factory để tạo và vận hành máy
+        printingFactory.StartMachine(); // Output: Printing machine is operating.
+        cuttingFactory.StartMachine();  // Output: Cutting machine is operating.
+        weldingFactory.StartMachine();  // Output: Welding machine is operating.
+    }
+}
+
+```
 **Design Patterns liên quan:**
 - **Abstract Factory**: Tạo ra *họ* các đối tượng liên quan thay vì một.
 - **Prototype**: Tạo object bằng cách clone thay vì `new`.
@@ -259,6 +365,8 @@ Khác với Factory Method chỉ tạo một object, **Abstract Factory tạo ra
 - Tạo ra các object tương thích với nhau trong cùng một cấu hình.
 
 Ví dụ: Trong ứng dụng quản lý số điện thoại, mỗi quốc gia có quy tắc mã số riêng. Việc hỗ trợ thêm quốc gia mới sẽ phức tạp nếu không áp dụng Abstract Factory.
+
+
 
 ### Kiến trúc của Abstract Factory Pattern
 
