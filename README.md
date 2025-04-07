@@ -103,18 +103,14 @@ Là một mẫu thiết kế thuộc nhóm **Creational Patterns**, được s�
 
 Mẫu này cung cấp **một interface chung để tạo đối tượng**, nhưng cho phép các lớp con **tự quyết định loại đối tượng nào sẽ được tạo ra**.
 
----
-
-### 🔍 Các đặc điểm chính của Factory Method:
+### Các đặc điểm chính của Factory Method:
 - **Tạo đối tượng thông qua interface chung**: Không khởi tạo trực tiếp thông qua `new`.
 - **Ẩn logic khởi tạo**: Che giấu toàn bộ quá trình xử lý phức tạp khi tạo object.
 - **Hạn chế sự phụ thuộc** giữa client code và các lớp cụ thể.
 - **Dễ mở rộng**: Thêm object mới mà không ảnh hưởng đến hệ thống cũ.
 - **Tăng tính đa hình**: Lựa chọn object khởi tạo dựa vào tham số truyền vào.
 
----
-
-### 📌 Ví dụ vấn đề (Trước khi dùng Factory Method)
+### Ví dụ vấn đề (Trước khi dùng Factory Method)
 
 Giả sử bạn có interface `IAnimal` và các class `Dog`, `Cat`, `Duck` implement nó:
 
@@ -130,13 +126,13 @@ if (...) {
 }
 ```
 
-🔁 **Nhược điểm**:
+**Nhược điểm**:
 - Lặp lại logic khởi tạo ở nhiều nơi.
 - Khó bảo trì, dễ lỗi nếu phải sửa ở nhiều chỗ.
 - Thiếu tính mở rộng và dễ vi phạm nguyên lý **Open/Closed**.
 
 
-### ✅ Giải pháp: Sử dụng Factory Method
+### Giải pháp: Sử dụng Factory Method
 
 Tạo ra một class `AnimalFactory` để quản lý logic khởi tạo:
 
@@ -159,7 +155,7 @@ public class AnimalFactory {
 ```
 
 
-### 🧱 Kiến trúc của Factory Method Pattern
+### Kiến trúc của Factory Method Pattern
 
 - **Product**: Interface/abstract class định nghĩa các đối tượng được tạo.
 - **ConcreteProduct**: Các class cụ thể implement `Product`.
@@ -167,26 +163,24 @@ public class AnimalFactory {
 - **ConcreteCreator**: Ghi đè `factory method` để tạo `ConcreteProduct`.
 
 
-### 👍 Ưu điểm:
+### Ưu điểm:
 - Tăng tính linh hoạt, dễ bảo trì.
 - Tập trung logic khởi tạo tại một nơi.
 - Dễ mở rộng (add class mới mà không sửa client).
 - Giảm lỗi compile-time, hỗ trợ xử lý lỗi khởi tạo.
 
-### 👎 Nhược điểm:
+### Nhược điểm:
 - Tăng số lượng class cần tạo.
 - Refactor từ code cũ sang Factory có thể phức tạp.
 - Nếu dùng private constructor, các class có thể không kế thừa được.
 
----
-
-### 🧠 Khi nào nên sử dụng:
+### Khi nào nên sử dụng:
 - Khi bạn có nhiều class con kế thừa từ cùng một interface/abstract class.
 - Khi logic khởi tạo phức tạp và được dùng ở nhiều nơi.
 - Khi cần dễ dàng mở rộng hệ thống trong tương lai.
 
 
-### 💻 Ví dụ minh họa với C#
+### Ví dụ minh họa với C#
 
 ```csharp
 public interface IPizza
@@ -226,7 +220,7 @@ public class PizzaFactory
 }
 ```
 
-### 🧪 Sử dụng Factory Method trong chương trình
+### Sử dụng Factory Method trong chương trình
 
 ```csharp
 class Program
@@ -240,13 +234,11 @@ class Program
     }
 }
 ```
-
 **Design Patterns liên quan:**
 - **Abstract Factory**: Tạo ra *họ* các đối tượng liên quan thay vì một.
 - **Prototype**: Tạo object bằng cách clone thay vì `new`.
 - **Builder**: Dùng khi object có nhiều bước khởi tạo phức tạp.
 
-### **Singleton**
 ## **Structural Patterns (Nhóm cấu trúc)**  
 - **Mục tiêu**: Thiết lập và định nghĩa quan hệ giữa các đối tượng hoặc class.  
 - **Mẫu tiêu biểu**:
