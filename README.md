@@ -239,6 +239,152 @@ class Program
 - **Prototype**: Tạo object bằng cách clone thay vì `new`.
 - **Builder**: Dùng khi object có nhiều bước khởi tạo phức tạp.
 
+
+#### **3. Abstract Factory Design Pattern**
+
+Là một mẫu thiết kế thuộc nhóm **Creational Patterns** – chuyên dùng để khởi tạo đối tượng. Mẫu này cung cấp một **interface để tạo ra các họ (family) đối tượng liên quan hoặc phụ thuộc với nhau**, mà không cần chỉ rõ lớp cụ thể của chúng.
+
+Khác với Factory Method chỉ tạo một object, **Abstract Factory tạo ra cả tập hợp (kit)** các object liên quan. Đây được xem là **“factory của các factory”**, một tầng trừu tượng cao hơn so với Factory Method.
+
+### Các đặc điểm chính của Abstract Factory:
+- **Tạo ra tập hợp các đối tượng liên quan** (cùng family).
+- **Không phụ thuộc vào các lớp cụ thể** của object.
+- **Hạn chế sự phụ thuộc giữa creator và concrete products**.
+- **Dễ dàng mở rộng** và hỗ trợ các biến thể mới của sản phẩm.
+
+### Mục đích sử dụng
+- Cung cấp một interface cho việc khởi tạo các họ sản phẩm có liên quan.
+- Tăng tính **đóng gói và tách biệt logic khởi tạo**.
+- Tăng khả năng mở rộng: dễ thêm họ sản phẩm mới.
+- Tạo ra các object tương thích với nhau trong cùng một cấu hình.
+
+Ví dụ: Trong ứng dụng quản lý số điện thoại, mỗi quốc gia có quy tắc mã số riêng. Việc hỗ trợ thêm quốc gia mới sẽ phức tạp nếu không áp dụng Abstract Factory.
+
+### Kiến trúc của Abstract Factory Pattern
+
+**Các thành phần chính:**
+
+- **AbstractFactory**: Interface/abstract class định nghĩa các phương thức để tạo ra các AbstractProduct.
+- **ConcreteFactory**: Cài đặt các phương thức từ AbstractFactory để tạo ra ConcreteProduct tương ứng.
+- **AbstractProduct**: Interface/abstract class của từng loại product.
+- **ConcreteProduct**: Cài đặt cụ thể của AbstractProduct.
+- **Client**: Sử dụng AbstractFactory và AbstractProduct, tương tác qua interface mà không cần biết lớp cụ thể.
+
+### Ưu điểm
+- Đảm bảo các sản phẩm tạo ra **tương thích với nhau**.
+- Tránh ràng buộc chặt chẽ giữa **client** và **concrete product**.
+- Dễ dàng mở rộng hoặc thêm biến thể sản phẩm mới.
+- Tuân thủ **Nguyên tắc đơn lẻ** và **Open/Closed Principle**.
+
+### Nhược điểm
+- Tăng số lượng lớp và interface trong chương trình.
+- Có thể khiến hệ thống trở nên **phức tạp không cần thiết** nếu không có nhiều họ sản phẩm.
+
+### Khi nào nên sử dụng
+- Khi các đối tượng cần được tạo ra theo **tập hợp tương thích**.
+- Khi chương trình cần được **cấu hình với nhiều họ sản phẩm** khác nhau.
+- Khi muốn **ẩn đi logic tạo ra đối tượng cụ thể** khỏi phía client.
+
+### Ví dụ minh họa với C#
+
+```csharp
+// Abstract Factory
+interface MonAnFactory
+{
+    HuTieu LayToHuTieu();
+    My LayToMy();
+}
+
+// Abstract Product A
+interface HuTieu
+{
+    string GetModelDetails();
+}
+
+// Abstract Product B
+interface My
+{
+    string GetModelDetails();
+}
+
+// Concrete Factory 1
+class LoaiGioFactory : MonAnFactory
+{
+    public HuTieu LayToHuTieu() => new HuTieuGio();
+    public My LayToMy() => new MyGio();
+}
+
+// Concrete Factory 2
+class LoaiNacFactory : MonAnFactory
+{
+    public HuTieu LayToHuTieu() => new HuTieuNac();
+    public My LayToMy() => new MyNac();
+}
+
+// Concrete Products
+class HuTieuNac : HuTieu
+{
+    public string GetModelDetails() => "HU TIEU NAC của em đây";
+}
+
+class HuTieuGio : HuTieu
+{
+    public string GetModelDetails() => "HU TIEU GIO của em đây";
+}
+
+class MyNac : My
+{
+    public string GetModelDetails() => "MY NAC của em đây";
+}
+
+class MyGio : My
+{
+    public string GetModelDetails() => "MY GIO của em đây";
+}
+
+// Client
+class Client
+{
+    HuTieu hutieu;
+    My my;
+
+    public Client(MonAnFactory factory)
+    {
+        hutieu = factory.LayToHuTieu();
+        my = factory.LayToMy();
+    }
+
+    public string GetHuTieuDetails() => hutieu.GetModelDetails();
+    public string GetMyDetails() => my.GetModelDetails();
+}
+```
+
+### Sử dụng trong `Main`
+
+```csharp
+class Program
+{
+    static void Main(string[] args)
+    {
+        MonAnFactory loaiNac = new LoaiNacFactory();
+        Client nacClient = new Client(loaiNac);
+
+        MonAnFactory loaiGio = new LoaiGioFactory();
+        Client gioClient = new Client(loaiGio);
+
+        Console.WriteLine("********* HU TIEU **********");
+        Console.WriteLine(nacClient.GetHuTieuDetails());
+        Console.WriteLine(gioClient.GetHuTieuDetails());
+
+        Console.WriteLine("******* MY **********");
+        Console.WriteLine(nacClient.GetMyDetails());
+        Console.WriteLine(gioClient.GetMyDetails());
+
+        Console.ReadKey();
+    }
+}
+```
+
 ## **Structural Patterns (Nhóm cấu trúc)**  
 - **Mục tiêu**: Thiết lập và định nghĩa quan hệ giữa các đối tượng hoặc class.  
 - **Mẫu tiêu biểu**:
