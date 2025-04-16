@@ -5,7 +5,7 @@ Design Pattern (mẫu thiết kế) là các giải pháp tối ưu, tái sử d
 - **Tính chất**: Là kỹ thuật lập trình, không phụ thuộc vào ngôn ngữ cụ thể.  
 - **Mục tiêu**: Cung cấp các giải pháp tối ưu để giải quyết vấn đề một cách hiệu quả.
 
-Tóm lại thì là những kinh nghiệm mà người trước đã đổ máu để rút ra, và khi chúng ta gặp những trường hợp củ thể thì mình có thể áp dụng theo công thức này luôn.
+Tóm lại thì nó là một công cụ để giải quyết một vấn đề củ thể trong phát triển phần mềm.
 
 
 # **II. Lợi ích của Design Patterns đối với Developers**
